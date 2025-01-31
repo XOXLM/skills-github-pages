@@ -1,54 +1,305 @@
-<header>
+<!DOCTYPE html><html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>حساب معدل الفصل الدراسي</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-<!--
-  <<< Author notes: Course header >>>
-  Include a 1280×640 image, course title in sentence case, and a concise description in emphasis.
-  In your repository settings: enable template repository, add your 1280×640 social image, auto delete head branches.
-  Add your open source license, GitHub uses MIT license.
--->
+    body {
+        font-family: 'Tajawal', Arial, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding: 40px 20px;
+    }
 
-# GitHub Pages
+    .container {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        max-width: 900px;
+        margin: auto;
+    }
 
-_Create a site or blog from your GitHub repositories with GitHub Pages._
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+        font-size: 2.2em;
+        position: relative;
+        padding-bottom: 15px;
+    }
 
-</header>
+    h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, #3498db, #2ecc71);
+        border-radius: 3px;
+    }
 
-<!--
-  <<< Author notes: Step 1 >>>
-  Choose 3-5 steps for your course.
-  The first step is always the hardest, so pick something easy!
-  Link to docs.github.com for further explanations.
-  Encourage users to open new tabs for steps!
--->
+    .subjects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
 
-## Step 1: Enable GitHub Pages
+    .subject {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
 
-_Welcome to GitHub Pages and Jekyll :tada:!_
+    .subject:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
 
-The first step is to enable GitHub Pages on this [repository](https://docs.github.com/en/get-started/quickstart/github-glossary#repository). When you enable GitHub Pages on a repository, GitHub takes the content that's on the main branch and publishes a website based on its contents.
+    h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+        font-size: 1.1em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-### :keyboard: Activity: Enable GitHub Pages
+    h3::before {
+        content: '📚';
+        font-size: 1.2em;
+    }
 
-1. Open a new browser tab, and work on the steps in your second tab while you read the instructions in this tab.
-1. Under your repository name, click **Settings**.
-1. Click **Pages** in the **Code and automation** section.
-1. Ensure "Deploy from a branch" is selected from the **Source** drop-down menu, and then select `main` from the **Branch** drop-down menu.
-1. Click the **Save** button.
-1. Wait about _one minute_ then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
-   > Turning on GitHub Pages creates a deployment of your repository. GitHub Actions may take up to a minute to respond while waiting for the deployment. Future steps will be about 20 seconds; this step is slower.
-   > **Note**: In the **Pages** of **Settings**, the **Visit site** button will appear at the top. Click the button to see your GitHub Pages site.
+    .input-group {
+        display: flex;
+        align-items: center;
+        margin: 12px 0;
+        gap: 10px;
+    }
 
-<footer>
+    .input-group label {
+        min-width: 70px;
+        font-weight: 500;
+        color: #34495e;
+    }
 
-<!--
-  <<< Author notes: Footer >>>
-  Add a link to get support, GitHub status page, code of conduct, license link.
--->
+    .exam-input {
+        flex: 1;
+        padding: 10px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: all 0.3s;
+        text-align: center;
+    }
 
----
+    .exam-input:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52,152,219,0.2);
+    }
 
-Get help: [Post in our discussion board](https://github.com/orgs/skills/discussions/categories/github-pages) &bull; [Review the GitHub status page](https://www.githubstatus.com/)
+    .td-input {
+        border-color: #3498db;
+        background-color: #f8f9fa;
+    }
 
-&copy; 2023 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
+    button {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1.1em;
+        font-weight: bold;
+        width: 100%;
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin: 20px 0;
+    }
 
-</footer>
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52,152,219,0.4);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    #result {
+        font-size: 1.8em;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        margin-top: 20px;
+        transition: all 0.3s;
+        background: #f8f9fa;
+    }
+
+    .coefficient {
+        font-size: 0.8em;
+        color: #666;
+        font-weight: normal;
+    }
+
+    @media (max-width: 600px) {
+        .container {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 1.8em;
+        }
+
+        .subjects-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <h1>حساب معدل الفصل الدراسي</h1><div class="subjects-grid">
+        <div class="subject">
+            <h3>مدخل إلى القانون 1 <span class="coefficient">(معامل 2)</span></h3>
+            <div class="input-group">
+                <label>EXAM:</label>
+                <input type="number" id="sub1_exam" step="0.1" class="exam-input" placeholder="0-20" min="0" max="20">
+            </div>
+            <div class="input-group">
+                <label>TD:</label>
+                <input type="number" id="sub1_td" step="0.1" class="exam-input td-input" placeholder="0-20" min="0" max="20">
+            </div>
+        </div>
+
+        <div class="subject">
+            <h3>تنظيم قضائي 1 <span class="coefficient">(معامل 2)</span></h3>
+            <div class="input-group">
+                <label>EXAM:</label>
+                <input type="number" id="sub2_exam" step="0.1" class="exam-input" placeholder="0-20" min="0" max="20">
+            </div>
+            <div class="input-group">
+                <label>TD:</label>
+                <input type="number" id="sub2_td" step="0.1" class="exam-input td-input" placeholder="0-20" min="0" max="20">
+            </div>
+        </div>
+
+        <div class="subject">
+            <h3>قانون دستوري 1 <span class="coefficient">(معامل 1)</span></h3>
+            <div class="input-group">
+                <label>EXAM:</label>
+                <input type="number" id="sub3_exam" step="0.1" class="exam-input" placeholder="0-20" min="0" max="20">
+            </div>
+            <div class="input-group">
+                <label>TD:</label>
+                <input type="number" id="sub3_td" step="0.1" class="exam-input td-input" placeholder="0-20" min="0" max="20">
+            </div>
+        </div>
+
+        <div class="subject">
+            <h3>تاريخ النظم القانونية <span class="coefficient">(معامل 1)</span></h3>
+            <div class="input-group">
+                <label>EXAM:</label>
+                <input type="number" id="sub4_exam" step="0.1" class="exam-input" placeholder="0-20" min="0" max="20">
+            </div>
+        </div>
+
+        <div class="subject">
+            <h3>لغة إنجليزية <span class="coefficient">(معامل 1)</span></h3>
+            <div class="input-group">
+                <label>EXAM:</label>
+                <input type="number" id="sub5_exam" step="0.1" class="exam-input" placeholder="0-20" min="0" max="20">
+            </div>
+        </div>
+
+        <div class="subject">
+            <h3>منهجية العلوم القانونية 1 <span class="coefficient">(معامل 1)</span></h3>
+            <div class="input-group">
+                <label>EXAM:</label>
+                <input type="number" id="sub6_exam" step="0.1" class="exam-input" placeholder="0-20" min="0" max="20">
+            </div>
+        </div>
+
+        <div class="subject">
+            <h3>المجتمع الدولي <span class="coefficient">(معامل 1)</span></h3>
+            <div class="input-group">
+                <label>EXAM:</label>
+                <input type="number" id="sub7_exam" step="0.1" class="exam-input" placeholder="0-20" min="0" max="20">
+            </div>
+        </div>
+    </div>
+
+    <button onclick="calculate()">احسب المعدل الآن</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    function calculate() {
+        // المواد التي تحتوي على TD
+        const sub1 = ((getValue('sub1_exam') + getValue('sub1_td')) / 2) * 2;
+        const sub2 = ((getValue('sub2_exam') + getValue('sub2_td')) / 2) * 2;
+        const sub3 = ((getValue('sub3_exam') + getValue('sub3_td')) / 2) * 1;
+
+        // المواد بدون TD
+        const sub4 = getValue('sub4_exam') * 1;
+        const sub5 = getValue('sub5_exam') * 1;
+        const sub6 = getValue('sub6_exam') * 1;
+        const sub7 = getValue('sub7_exam') * 1;
+
+        const total = sub1 + sub2 + sub3 + sub4 + sub5 + sub6 + sub7;
+        const totalCoefficient = 9;
+        
+        const average = total / totalCoefficient;
+        
+        showResult(average);
+    }
+
+    function getValue(id) {
+        const value = parseFloat(document.getElementById(id).value);
+        return isNaN(value) ? 0 : Math.min(Math.max(value, 0), 20);
+    }
+
+    function showResult(average) {
+        const resultDiv = document.getElementById('result');
+        const isPass = average >= 10;
+        
+        resultDiv.innerHTML = `
+            <strong>معدل الفصل:</strong> 
+            ${average.toFixed(2)} 
+            ${isPass ? '🎉 مبروك النجاح!' : '❌ للأسف لم تنجح'}
+        `;
+        
+        resultDiv.style.background = isPass ? 
+            'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)' : 
+            'linear-gradient(135deg, #f6d365 0%, #fda085 100%)';
+        
+        resultDiv.style.color = '#2c3e50';
+        resultDiv.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+    }
+
+    // إضافة مؤثرات حركية للحقول
+    document.querySelectorAll('.exam-input').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.parentElement.style.transform = 'scale(1)';
+        });
+    });
+</script>
+
+</body>
+</html>
